@@ -1,8 +1,14 @@
 ---
-title: "From Idea to Published Research — My Obsidian + Quartz Workflow"
-tags: [workflow, obsidian, quartz, publishing, pkm]
+title: From Idea to Published Research — My Obsidian + Quartz Workflow
+tags:
+  - workflow
+  - obsidian
+  - quartz
+  - publishing
+  - pkm
 created: 2026-03-26
 status: published
+publish: true
 ---
 # From Idea to Published Research
 
@@ -17,17 +23,17 @@ flowchart LR
     A(["💡 Raw Idea"]):::seed
 
     subgraph WRITE ["✍️  Write"]
-        B["📥 Capture\nInbox/"]:::capture
-        C["📝 Draft\nResearch/Topic/"]:::draft
-        D["🔍 Refine\nAdd index.md"]:::refine
+        B["📥 Capture Inbox/"]:::capture
+        C["📝 Draft Research/Topic/"]:::draft
+        D["🔍 Refine Add index.md"]:::refine
     end
 
     subgraph SHIP ["🚀  Ship"]
         F["⚙️ publish.sh"]:::script
-        G["🤖 GitHub Actions\nbuild + deploy"]:::ci
+        G["🤖 GitHub Actions build + deploy"]:::ci
     end
 
-    H(["🌐 Live Site\n~2 min"]):::live
+    H(["🌐 Live Site ~2 min"]):::live
     E{{"Ready?"}}:::gate
 
     A --> B --> C --> D --> E
@@ -55,18 +61,18 @@ Before anything else, you need a structure that doesn't get in your way. Here's 
 flowchart TD
     VAULT[("🗂️ Obsidian Vault")]:::root
 
-    VAULT --> IB["📥 Inbox/\nFleeting captures · process weekly"]:::inbox
-    VAULT --> DL["📅 Daily/\nWork logs"]:::daily
-    VAULT --> NO["📝 Notes/\nPermanent atomic notes"]:::notes
+    VAULT --> IB["📥 Inbox/ Fleeting captures · process weekly"]:::inbox
+    VAULT --> DL["📅 Daily/ Work logs"]:::daily
+    VAULT --> NO["📝 Notes/ Permanent atomic notes"]:::notes
     VAULT --> RE["🔬 Research/"]:::research
     VAULT --> TP["🧩 Templates/"]:::tmpl
 
-    RE --> TOPIC["📁 Topic folder\ne.g. SDD/"]:::topic
+    RE --> TOPIC["📁 Topic folder e.g. SDD/"]:::topic
 
-    TOPIC --> IDX["🟢 index.md\nSite landing page"]:::pub
+    TOPIC --> IDX["🟢 index.md Site landing page"]:::pub
     TOPIC --> ART["📄 main-article.md"]:::pub
     TOPIC --> TPF["📋 templates, references"]:::pub
-    TOPIC --> EX["🔒 examples/\nPrivate — never published"]:::priv
+    TOPIC --> EX["🔒 examples/ Private — never published"]:::priv
 
     classDef root    fill:#1a1a2e,stroke:#4c6ef5,color:#fff,font-weight:bold
     classDef inbox   fill:#74c0fc,stroke:#339af0,color:#1a1a2e
@@ -147,11 +153,11 @@ Run through this checklist before moving on:
 
 ```mermaid
 flowchart LR
-    C1(["① Frontmatter\ncomplete"]):::step
-    C2(["② index.md\nexists"]):::step
-    C3(["③ Mermaid diagrams\ntested locally"]):::step
-    C4(["④ No private folders\nin index"]):::step
-    C5(["⑤ Wikilinks\nresolve"]):::step
+    C1(["① Frontmatter complete"]):::step
+    C2(["② index.md exists"]):::step
+    C3(["③ Mermaid diagrams tested locally"]):::step
+    C4(["④ No private folders in index"]):::step
+    C5(["⑤ Wikilinks resolve"]):::step
     GO{{"✅ Ship it"}}:::go
 
     C1 -->|"✓"| C2 -->|"✓"| C3 -->|"✓"| C4 -->|"✓"| C5 -->|"✓"| GO
@@ -180,14 +186,14 @@ Obsidian and Quartz are two completely separate systems on your machine. They do
 
 ```mermaid
 flowchart LR
-    OB[("📓 Obsidian Vault\nResearch/SDD/")]:::vault
-    QZ[["⚙️ publish.sh\nrsync + git push"]]:::script
-    GH[("🐙 GitHub Repo\nVenkateshDas/sdd-site")]:::repo
-    CI["🤖 GitHub Actions\nnpm ci → quartz build"]:::ci
-    WB(["🌐 venkateshdas\n.github.io/sdd-site"]):::live
+    OB[("📓 Obsidian Vault Research/SDD/")]:::vault
+    QZ[["⚙️ publish.sh rsync + git push"]]:::script
+    GH[("🐙 GitHub Repo VenkateshDas/sdd-site")]:::repo
+    CI["🤖 GitHub Actions npm ci → quartz build"]:::ci
+    WB(["🌐 venkateshdas .github.io/sdd-site"]):::live
 
-    OB -->|"rsync\ncopies changed files"| QZ
-    QZ -->|"git push\norigin main"| GH
+    OB -->|"rsync copies changed files"| QZ
+    QZ -->|"git push origin main"| GH
     GH -->|"triggers on push"| CI
     CI -->|"deploys in ~2 min"| WB
 
@@ -260,15 +266,15 @@ Here's what the script does end-to-end:
 flowchart TD
     START(["▶ ./publish.sh"]):::start
 
-    START --> RS["⚡ rsync\nResearch/Topic/ → content/\nexcludes: examples · .DS_Store · *.canvas"]:::sync
+    START --> RS["⚡ rsync Research/Topic/ → content/ excludes: examples · .DS_Store · *.canvas"]:::sync
 
     RS --> CH{{"Any changes?"}}:::gate
 
-    CH -->|"nothing changed"| ND(["💤 No changes.\nNothing to publish."]):::skip
-    CH -->|"files changed"| GC["📦 git commit\nsync: Obsidian → Quartz · timestamp"]:::git
-    GC --> GP["⬆️ git push\norigin main"]:::git
-    GP --> GA["🤖 GitHub Actions\nnpm ci → quartz build"]:::ci
-    GA --> LIVE(["🌐 Live on GitHub Pages\n~2 minutes"]):::live
+    CH -->|"nothing changed"| ND(["💤 No changes. Nothing to publish."]):::skip
+    CH -->|"files changed"| GC["📦 git commit sync: Obsidian → Quartz · timestamp"]:::git
+    GC --> GP["⬆️ git push origin main"]:::git
+    GP --> GA["🤖 GitHub Actions npm ci → quartz build"]:::ci
+    GA --> LIVE(["🌐 Live on GitHub Pages ~2 minutes"]):::live
 
     classDef start fill:#ffd43b,stroke:#f59f00,color:#1a1a2e,font-weight:bold
     classDef sync  fill:#74c0fc,stroke:#339af0,color:#1a1a2e
@@ -287,7 +293,7 @@ Each topic gets its own Quartz repo. Sites stay independent and focused.
 
 ```mermaid
 flowchart LR
-    VAULT[("🗂️ Obsidian Vault\nResearch/")]:::root
+    VAULT[("🗂️ Obsidian Vault Research/")]:::root
 
     subgraph TOPICS ["📁 Topic Folders"]
         S1["SDD/"]:::t1
@@ -296,9 +302,9 @@ flowchart LR
     end
 
     subgraph SITES ["🌐 Live Sites"]
-        R1(["quartz-sdd\ngithub.io/sdd-site"]):::s1
-        R2(["quartz-nexttopic\ngithub.io/nexttopic"]):::s2
-        R3(["quartz-anothertopic\ngithub.io/anothertopic"]):::s3
+        R1(["quartz-sdd github.io/sdd-site"]):::s1
+        R2(["quartz-nexttopic github.io/nexttopic"]):::s2
+        R3(["quartz-anothertopic github.io/anothertopic"]):::s3
     end
 
     VAULT --> S1 & S2 & S3
@@ -319,13 +325,13 @@ When to spin up a new repo:
 
 ```mermaid
 flowchart TD
-    Q{{"Is this topic self-contained\nand independently shareable?"}}:::gate
+    Q{{"Is this topic self-contained and independently shareable?"}}:::gate
 
-    Q -->|"Yes"| NR["🆕 Create a new\nQuartz repo"]:::new
-    Q -->|"No"| EX{{"Does it belong with\nexisting published research?"}}:::gate
+    Q -->|"Yes"| NR["🆕 Create a new Quartz repo"]:::new
+    Q -->|"No"| EX{{"Does it belong with existing published research?"}}:::gate
 
-    EX -->|"Yes"| ADD["➕ Add to existing\ntopic folder"]:::add
-    EX -->|"No"| DRAFT["📋 Keep as draft\nin Research/ — don't publish yet"]:::draft
+    EX -->|"Yes"| ADD["➕ Add to existing topic folder"]:::add
+    EX -->|"No"| DRAFT["📋 Keep as draft in Research/ — don't publish yet"]:::draft
 
     classDef gate  fill:#e599f7,stroke:#cc5de8,color:#1a1a2e,font-weight:bold
     classDef new   fill:#d3f9d8,stroke:#2f9e44,color:#1a1a2e,font-weight:bold
